@@ -1,0 +1,30 @@
+version: '3'
+services:
+  catalogue:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      KAFKA_BOOTSTRAP_SERVER: "pkc-4ygn6.europe-west3.gcp.confluent.cloud:9092"
+      KAFKA_SECURITY_PROTOCOL: "SASL_SSL"
+      KAFKA_USERNAME: "KTIDDULUPUETVKOR"
+      KAFKA_PASSWORD: "h0EsaIyNsFKrejrLmVsJZwOahA+2wgXBbSdHO/jJNyrEJ0p19LV+bdYeD2XR3gRU"
+      KAFKA_SASL_MECHANISM: "PLAIN"
+      KAFKA_TOPIC: "catalogue_source"
+      API_AUTH: "827e8e1a-119c-48e2-af1c-cef81f933a5a"
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: "catalogue"
+      POSTGRES_USER: "catalogue"
+      POSTGRES_PASSWORD: "catalogue_password"
+    ports:
+      - "5432:5432"
+
+volumes:
+  db_data:
