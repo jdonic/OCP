@@ -6,3 +6,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+
+  testday-api:
+    image: heurekaoc/testday-api:latest
+    ports:
+      - "5000:5000"

@@ -2,7 +2,6 @@ from kafka import KafkaConsumer
 from typing import Generator
 
 import config
-
 import json
 
 
@@ -15,17 +14,12 @@ class KafkaMessageConsumer:
             sasl_plain_username=config.KAFKA_USERNAME,
             sasl_plain_password=config.KAFKA_PASSWORD,
             value_deserializer=lambda x: json.loads(x.decode("utf-8")),
+            auto_offset_reset = 'earliest',
+
         )
 
     def receive_messages(self, topic: str) -> Generator:
         self.consumer.subscribe(topics=[topic])
-        print(f"Subscribed to topics: {self.consumer.subscription()}")
-        print(f"Config je {self.consumer.config}")
         for msg in self.consumer:
             yield msg.value
 
-
-if __name__ == "__main__":
-    consumer = KafkaMessageConsumer()
-    for message in consumer.receive_messages(config.KAFKA_TOPIC):
-        print("Received message:", message)
