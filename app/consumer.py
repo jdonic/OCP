@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 from typing import Generator
 
-from . import config
+import config
 import json
 
 
