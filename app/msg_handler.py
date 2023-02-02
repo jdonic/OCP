@@ -9,6 +9,9 @@ class MessageHandler:
         self.database_handler = database_handler
 
     def handle_message(self, message: Dict[str, Any]) -> None:
+        """
+        Handles all the incomming messages
+        """
         metadata = message.get("metadata")
         payload = message.get("payload")
 
@@ -25,11 +28,18 @@ class MessageHandler:
             return
 
     def handle_category(self, payload: Dict[str, Any]) -> None:
+        """
+        Handles messages of category type.
+        """
         self.database_handler.insert_category(
             payload.get("name"), payload.get("parent_category")
         )
 
     def handle_offer(self, payload: Dict[str, Any]) -> None:
+        """
+        Handles messages of offer type.
+        Initiatates a creation of a product.
+        """
         inserted = self.database_handler.insert_offer(
             payload.get("id"),
             payload.get("name"),
@@ -42,6 +52,11 @@ class MessageHandler:
             self.create_products(payload.get("id"), payload.get("parameters"))  # type: ignore
 
     def create_products(self, offer_id: str, parameters: Dict) -> None:
+        """
+        Find's all the matching  offers for a offer.
+        If any of the matches is in the DB, find's differences between them
+        and based of those values creates a product.
+        """
         matches = get_offer_matches(offer_id)
         if matches:
             for match_id in matches:
@@ -58,6 +73,10 @@ class MessageHandler:
     def find_differences(
         offer_parameters: Dict, match_parameters: Dict
     ) -> Tuple[int, int]:
+        """
+        Find the differences and commonalities
+        between 2 dictionaries of parameteres.
+        """
         same_keys = set(offer_parameters.keys()) & set(match_parameters.keys())
         same_parameters = sum(
             offer_parameters[key] == match_parameters[key] for key in same_keys
