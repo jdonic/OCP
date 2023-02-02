@@ -1,7 +1,7 @@
 from kafka import KafkaConsumer
 from typing import Generator
 
-import config
+from . import config
 import json
 
 
@@ -18,6 +18,10 @@ class KafkaMessageConsumer:
         )
 
     def receive_messages(self, topic: str) -> Generator:
+        """
+        Subscribes to a topic and generates back
+        recieved messages.
+        """
         self.consumer.subscribe(topics=[topic])
         for msg in self.consumer:
             yield msg.value
