@@ -14,12 +14,10 @@ class KafkaMessageConsumer:
             sasl_plain_username=config.KAFKA_USERNAME,
             sasl_plain_password=config.KAFKA_PASSWORD,
             value_deserializer=lambda x: json.loads(x.decode("utf-8")),
-            auto_offset_reset = 'earliest',
-
+            auto_offset_reset="earliest",
         )
 
     def receive_messages(self, topic: str) -> Generator:
         self.consumer.subscribe(topics=[topic])
         for msg in self.consumer:
             yield msg.value
-

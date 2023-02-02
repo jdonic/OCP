@@ -1,7 +1,7 @@
 import requests
 
 
-def get_offer_matches(offer_id):
+def get_offer_matches(offer_id: str) -> None:
     url = f"http://localhost:5000/offer-matches/{offer_id}"
     headers = {"Auth": "827e8e1a-119c-48e2-af1c-cef81f933a5a"}
 
